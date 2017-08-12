@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+	body{margin:0; padding:0; font-size:12px;}
+	table{border-collapse:collapse;}
+	table td{border:solid 1px #ddd; height:45px;}
+	a{color:#005eac;}
+	
+</style>
+<script type="text/javascript" src="contextmenu.pack.js"></script>
+
+<script type="text/javascript">
+function ShowContextMenu(e, obj ,str){
+	var item = [];
+	var idx = 0;
+	item[idx++] = {
+		text:'新建', func:function(){
+			Test(obj, 'aa');
+		}
+	};
+	item[idx++] = {
+		text:'编辑', func:function(){
+			Test(obj, 'bb');
+		}
+	};
+	item[idx++] = {
+		text:'保存', func:function(){
+			Test(obj, 'cc');
+		}
+	};
+	item[idx++] = {
+		text: 'separator'
+	};
+	item[idx++] = {
+		text:'关闭', func:function(){
+			Test(obj, 'dd');
+		}
+	};
+	item[idx++] = {
+		text:'复制', func:function(){
+			Test(obj, 'ee');
+		},
+		sub:{
+			width: 100,
+			item:[
+				{
+					text:'更新ad', 
+					func:function(){ Test(obj,'sub1'); }
+				},
+				{text: 'separator'},
+				{
+					text:'删除'
+				},
+				{
+					text:'插入',
+					func:function(){ Test(obj,'sub2');
+					},
+					sub:{
+						width: 150,
+						item:[
+							{
+								text:'更新名称a', func:function(){ Test(obj,'sub11'); },
+								sub:{
+									width: 150,
+									item:[
+										{text:'更新名称b', func:function(){ Test(obj,'sub111'); },
+											sub:{
+												width: 150,
+												item:[
+													{text:'更新名称c', func:function(){ Test(obj,'sub1111'); }
+													},
+													{text:'删除名称'},
+													{text:'插入记录'}
+												]
+											}
+										},
+										{text:'删除名称'},
+										{text:'插入记录'}
+									]
+								}
+							},
+							{
+								text:'删除名称'
+							},
+							{text:'插入记录'}
+						]
+					}
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				},
+				{
+					text:'删除'
+				}
+			]
+		}
+	};
+
+	var config = {
+		width: 120,
+		zindex: 1000,
+		opacity: 1,
+		item: item,
+		coverOcx: true
+	};
+	var cmenu = new ContextMenu(e, config, obj);
+}
+
+function Test(obj, str){
+	alert(obj.innerHTML);
+	alert(str);
+}
+
+function ShowContextMenuDemo(e, obj){
+	var config = {
+		//width: 150, //宽度可以设置，也可以不设置
+		zindex: 1000,
+		opacity: 1,
+		item: [
+			{text: obj.innerHTML,func:function(){ ContextMenuCallBack(obj.innerHTML); } },
+			{text:'新建新建',shortcutkey:'N', func:function(){ ContextMenuCallBack('新建'); } },
+			{text:'编辑编辑1',shortcutkey:'E', func:function(){ ContextMenuCallBack('编辑'); },
+				sub:{
+					//width: 120, //宽度可以设置，也可以不设置
+					item:[
+						{text:'更新', shortcutkey:'U', func:function(){ ContextMenuCallBack('更新'); }},
+						{text:'删除aa', disabled:true, func:function(){ ContextMenuCallBack('删除'); }},
+						{text: 'separator'},
+						{text:'复制', shortcutkey:'C', func:function(){ ContextMenuCallBack('复制'); }},
+						{text:'粘贴', func:function(){ ContextMenuCallBack('粘贴'); }},
+						{text:'剪切', func:function(){ ContextMenuCallBack('剪切'); }}
+					]
+				}
+			},
+			{text:'保存保存',func:function(){ } }
+		]
+	};
+	new ContextMenu(e, config, obj);
+}
+function ContextMenuCallBack(str){
+	alert(str);
+}
+</script>
+</head>
+
+<body>
+
+<table cellpadding="0" cellspacing="0" style="margin:100px 0 0; width:100%;float:right;" >
+	<tr>
+		<td oncontextmenu="ShowContextMenu(event, this, this.innerHTML);">右键菜单</td>
+		<td oncontextmenu="ShowContextMenuDemo(event,this);">右键菜单示例一</td>
+		<td oncontextmenu="ShowContextMenuDemo(event,this);">右键菜单示例三</td>
+	</tr>
+	<tr>
+		<td oncontextmenu="ShowContextMenu(event, this, this.innerHTML);">右键菜单</td>
+		<td oncontextmenu="ShowContextMenuDemo(event,this);">右键菜单示例二</td>
+		<td oncontextmenu="ShowContextMenuDemo(event,this);">右键菜单示例四</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿.cmBox{border-right:solid 1px #ddd; border-bottom:solid 1px #ddd; background:#fff; display:block; position:absolute; overflow:visible;}
+.cmBox ul{margin:0; padding:3px; border:solid 1px #aca899; display:block; overflow:visible;}
+.cmBox li{margin:0; padding:0; list-style:none; height:18px; line-height:18px; padding:0 2px; font-size:12px; font-family:Arial,宋体; 
+	color:#000; position:relative; clear:both; cursor:default; display:block;}
+.cmBox li ul{display:none;}
+.cmBox li:hover ul{display:block;}
+.cmBox li a,.cmBox li div,.cmBox li span{display:block; height:18px; line-height:18px; padding:0; margin:0;}
+.cmBox li a:hover{color:#fff;}
+.cmBox li:hover,.cmBox li.hover,.cmBox .cur,.cmBox li .cur{background:#316ac5; color:#fff; text-decoration:none;}
+
+/*二、三级菜单*/
+.cmBox li .cmBox,.cmBox li .cmBox li .cmBox{display:none;}
+.cmBox li:hover .cmBox,.cmBox li .cmBox li:hover .cmBox{display:block;}
+
+/*四、五级菜单*/
+.cmBox li .cmBox li .cmBox li .cmBox,.cmBox li .cmBox li .cmBox li .cmBox li .cmBox{display:none;}
+.cmBox li .cmBox li .cmBox li:hover .cmBox,.cmBox li .cmBox li .cmBox li .cmBox li:hover .cmBox{display:block;}
+
+/*兼容IE6*/
+/*二、三级菜单*/
+.cmBox li.hover .cmBox,.cmBox li .cmBox li.hover .cmBox{_display:block;}
+.cmBox li.hover ul,.cmBox li cmBox li.hover ul{_display:block; overflow:hidden;}
+/*四、五级菜单*/
+.cmBox li .cmBox li .cmBox li.hover .cmBox,.cmBox li .cmBox li .cmBox li .cmBox li.hover .cmBox{_display:block;}
+.cmBox li .cmBox li .cmBox li.hover ul,.cmBox li .cmBox li .cmBox li cmBox li.hover ul{_display:block; overflow:hidden;}
+
+.cmBox .cm-sub-icon{margin:0;padding:0;float:right;width:6px;height:11px;display:block;background:url("imgs/sub.gif") no-repeat center;margin-top:3px;}
+/*分隔符*/
+.cmBox .cm-item-separator{height:0; border-top:solid 1px #aca899; line-height:0; margin:3px 0; font-size:0;}
+
+.cmBoxShadow{border:solid 1px #ddd; display:block; position:absolute;}

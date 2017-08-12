@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OTREE示例-下拉树形菜单</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css">
+		body{font-size:12px;}
+	</style>
+	<script type="text/javascript" src="otree.js"></script>
+	<script type="text/javascript">
+		var txtObj = null;
+		var timer = null;
+		var timer1 = null;
+		var tree = null;
+
+		var stree = null;
+		function loadTree(id){
+			var box = document.getElementById('divTree');
+			tree = new oTree('ot', box, {showLine:true, showIcon:false, callback:treeCallback});
+			var nid = 1;
+			var pid = 0;
+			tree.add({id:nid, pid:pid, name:'节点1'});
+			nid++;
+			tree.add({id:nid, pid:pid, name:'节点2'});
+
+			pid = 1;
+			for(var i=0; i<5; i++){
+				nid++;
+				tree.add({id:nid, pid:pid, name:'子节点' + nid});
+			}
+
+			pid = nid;
+			for(var i=0; i<5; i++){
+				nid++;
+				tree.add({id:nid, pid:pid, name:'子节点' + nid});
+			}
+			
+			pid = 2;
+			for(var i=0; i<5; i++){
+				nid++;
+				tree.add({id:nid, pid:pid, name:'子节点' + nid});
+			}
+			tree.select(id);
+		}
+
+		function treeCallback(param){
+			txtObj.value = param.name;
+			txtObj.lang = param.id;
+
+			if(timer != null){
+				window.clearTimeout(timer);
+			}
+			timer = window.setTimeout(hideTree, 1000);
+		}
+
+		function showTree(obj){
+			txtObj = obj;
+			var width = obj.offsetWidth;
+			var box = document.getElementById('divTree');
+			box.style.width = width + 'px';
+			box.style.display = '';
+			
+			box.style.position = 'absolute';
+			var position = getPosition(obj);
+
+			box.style.left = position.x + 'px';
+			box.style.top = (obj.offsetHeight + position.y) + 'px';
+
+			loadTree(obj.lang);
+
+			window.clearTimeout(timer);
+		}
+
+		function hideTree(){
+			var box = document.getElementById('divTree');
+			box.style.display = 'none';
+		}
+
+		document.onmousedown = function(ev){
+			if(timer != null){
+				window.clearTimeout(timer);
+			}
+			timer = window.setTimeout(hideTree, 500);
+		};
+
+		function stopBubble(ev){
+			try{
+				ev = window.event || e;
+				if(ev.stopPropagation){ev.stopPropagation();} else{ev.cancelBubble = true;}
+				if(ev.preventDefault){ev.preventDefault();} else{ev.returnValue = false;}
+			}catch(ex){}
+		}
+
+		window.onload = function(){
+			document.getElementById('divTree').onclick = function(){
+				window.clearTimeout(timer);
+			};
+
+			loadStaticTree();
+		};
+
+		function getPosition(obj) {  
+			var y = obj.offsetTop;  
+			var x = obj.offsetLeft;  
+			while(obj = obj.offsetParent)
+			{ 
+				 y += obj.offsetTop; 
+				 x += obj.offsetLeft; 
+			}   
+			var position = {x:x, y:y};
+			return position;
+		}
+
+		/*静态树*/
+		function loadStaticTree(){
+			var box = document.getElementById('divTreeBox');
+			stree = new oTree('ots', box, {showLine:true, showIcon:false,showCheckBox:true, callback:treeCallback1});
+			stree.root({name:'目录列表'});
+			
+			var nid = 1;
+			var pid = 0;
+			var tmp = 0;
+			stree.add({id:nid, pid:0, name:'根目录1'});
+			
+			pid = 1;
+			for(var i=0; i<6; i++){
+				nid++;
+				pid = 1;
+				stree.add({id:nid, pid:pid, name:'一级目录' + pid + i,clickChecked:true,
+					checkbox:{name:'chbDir',callback:selectCheckBoxCallback}
+				});
+				
+				tmp = pid;
+				pid = nid;
+				for(var j=0; j<3; j++){
+					nid++;
+					stree.add({id:nid, pid:pid, name:'二级目录' + tmp + i + j,clickChecked:true,
+						checkbox:{name:'chbSub',callback:selectCheckBoxCallback}
+					});
+				}
+			}
+		}
+
+		function showStaticTree(obj){
+			txtObj = obj;
+			var box = document.getElementById('divTree1');
+			box.style.display = '';
+			box.style.position = 'absolute';
+			var position = getPosition(obj);
+
+			box.style.left = position.x + 'px';
+			box.style.top = (obj.offsetHeight + position.y) + 'px';
+			
+			var val = obj.lang;
+			var arr = val.split(',');
+			stree.selectAllCheckBox(false);
+			if(arr.length > 0){
+				for(var i in arr){
+					var obj = stree.getObj(stree.objIdPrefix.checkbox, arr[i]);
+					if(obj != null){
+						obj.checked = true;
+					}
+				}
+			} else {
+				stree.select(obj.lang);
+			}
+		}
+
+		function treeCallback1(param){
+			/*
+			txtObj.value = param.name;
+			txtObj.lang = param.id;
+			*/
+			var arrName = [];
+			var arr = stree.getCheckedValue('chbSub');
+			for(var i = 0; i<arr.length; i++){
+				var obj = stree.getObj(stree.objIdPrefix.text, arr[i]);
+				if(obj != null){
+					arrName.push(obj.innerHTML);
+				}
+			}
+			txtObj.value = arrName.join(',');
+			txtObj.lang = arr;
+			/*
+			if(timer != null){
+				window.clearTimeout(timer);
+			}
+			timer = window.setTimeout(hideStaticTree, 2000);
+			*/
+		}
+		
+		function selectCheckBoxCallback(param){
+			var arrName = [];
+			var arr = stree.getCheckedValue('chbSub');
+			for(var i = 0; i<arr.length; i++){
+				var obj = stree.getObj(stree.objIdPrefix.text, arr[i]);
+				if(obj != null){
+					arrName.push(obj.innerHTML);
+				}
+			}
+			txtObj.value = arrName.join(',');
+			txtObj.lang = arr;
+		}
+
+		function hideStaticTree(){
+			var box = document.getElementById('divTree1');
+			box.style.display = 'none';
+		}
+
+	</script>
+</head>
+<body>
+OTREE树形菜单示例<br />
+树形菜单作下拉列表用
+<br />
+<div id="divTree" style="display:none;max-height:150px;border:solid 1px #ccc;overflow:auto;z-index:9999;background:#fff;">
+	请选择：
+</div>
+<div id="divTree1" style="display:none;width:240px;height:150px;border:solid 1px #ccc;overflow:hidden;z-index:9999;background:#fff;">
+	<div style="height:24px;border-bottom:solid 1px #ddd;background:#f1f1f1;line-height:24px;">
+		<a href="javascript:void(0);" onclick="hideStaticTree();" style="float:right;margin:0 5px 0 0;">关闭</a>
+	</div>
+	<div id="divTreeBox" style="height:125px;overflow:auto;"></div>
+</div>
+<div style="margin:50px;border:solid 1px #ccc;padding:10px;float:left;line-height:28px;">
+	动态加载树菜单：
+	<br />
+	请选择：
+	<input type="text" id="txtTest" onfocus="showTree(this);" readonly="readonly" />
+	<br />
+	请选择：
+	<input type="text" id="txtTest1" onfocus="showTree(this);" readonly="readonly" />
+</div>
+<div style="margin:50px 0 0 200px;border:solid 1px #00f;padding:15px;float:left;position:relative;">
+	动态加载树菜单：
+	<br />
+	<table cellpadding="0" cellspacing="0" style="line-height:35px;">
+		<tr>
+			<td>请选择：</td>
+			<td><input type="text" id="txtTest2" onfocus="showTree(this);" readonly="readonly" /></td>
+		</tr>
+		<tr>
+			<td>请选择：</td>
+			<td><input type="text" id="txtTest3" onfocus="showTree(this);" readonly="readonly" /></td>
+		</tr>
+	</table>
+</div>
+
+<div style="margin:50px;border:solid 1px #ccc;padding:10px;float:left;line-height:28px;clear:both;">
+	静态加载树菜单(仅加载一次)：
+	<br />
+	请选择：
+	<input type="text" id="txtTest4" style="width:240px;" onfocus="showStaticTree(this);" readonly="readonly" />
+	<br />
+	请选择：
+	<input type="text" id="txtTest5" style="width:240px;" onfocus="showStaticTree(this);" readonly="readonly" />
+</div>
+</body>
+</html>

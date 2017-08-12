@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OTREE示例</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css">
+	body{font-size:12px;}
+	</style>
+	<style type="text/css">
+		.form a{margin-right:5px;}
+	</style>
+	<script type="text/javascript" src="otree.js"></script>
+</head>
+<body>
+<a onclick="o.openAll();">全部展开</a>
+<a onclick="o.closeAll();">全部收缩</a>
+<a onclick="o.openLevel(0);">收缩至0级</a>
+<div id="treebox" style="width:240px; height:360px; overflow:auto; padding:5px 0; border:solid 1px #ddd;float:left;"></div>
+
+<div id="divDebug"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+String.prototype.padLeft = function(totalWidth, paddingChar) {
+    var s = this;
+    if (paddingChar == undefined) {
+        paddingChar = '0';
+    }
+    for (var i = 0, c = totalWidth - s.length; i < c; i++) {
+        s = paddingChar + s;
+    }
+    return s;
+};
+Date.prototype.toString = function (format) {
+    var year = this.getFullYear();
+    if (year < 1900) { year += 1900; }
+    var strDate = ['' + year,
+        ('' + (this.getMonth() + 1)).padLeft(2, '0'), 
+        ('' + this.getDate()).padLeft(2, '0'), 
+        ('' + this.getHours()).padLeft(2, '0'), 
+        ('' + this.getMinutes()).padLeft(2, '0'), 
+        ('' + this.getSeconds()).padLeft(2, '0'),  
+        ('' + this.getMilliseconds()).padLeft(3, '0')
+    ];
+    return strDate[0] + '-' + strDate[1] + '-' + strDate[2] + ' ' + strDate[3] + ':' + strDate[4] + ':' + strDate[5] + ' ' + strDate[6];
+};
+	function $I(i){
+		return document.getElementById(i);
+	}
+
+	function expandCallBack(param){
+		//alert('expandCallBack:' + param.id + ',' + param.type + ',' + param.code);
+	}
+
+	function callBack(param, objTree, callbackObj){		
+		alert('CallBack:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + ',loaded:' + param.loaded + ',tree:' + param.tree + '}');//param.tree 一维数组 [pid,pid,...,id]
+		if(param.tree != undefined && objTree != undefined){
+			alert('父级树：' + objTree.getTextValue(param.tree));
+		}
+		//alert(typeof param.id + ',' + param.id);
+	}	
+
+	function callBack1(param){
+		alert('CallBack-1:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + ',tree:' + param.tree + '}');
+	}
+
+	function loadedCallback(objTree){
+		
+		//objTree.openLevel(0);
+		//alert('树菜单节点加载完毕' + ', 第' + objTree.loadTimes + '次');
+	}
+
+	var o = new oTree('o', $I('treebox'), {
+		showCheckBox: true, showSubNode: false,
+		showIcon: true, showLine: false,
+		spaceWidth: 15, skin: 'default',
+		callback: callBack,
+		complete: loadedCallback,
+		//loadedCallback: loadedCallback,
+		//showFocus: false,
+		showTitle: true,
+		expandCallback: expandCallBack, 
+		dblclick: false,
+		idIsNumber: true
+	});
+	o.root({name:'树菜单'});
+
+	//o.add({id:'root', pid:-1, name:'树菜单'});
+
+	var arrYear = [2010, 2011, 2012];
+	//var arrYear = [2010];
+
+/*
+	for(var i=0; i<arrYear.length; i++){
+		var yid = arrYear[i];
+		o.add({
+			id:yid, pid:'root', name:'' + yid,type:'year',
+			//href:'http://60.12.220.24:81',target:'frmMain',
+			callback:function(param){callBack(param);},
+			clickToggle:'open',clickChecked:null,
+			//showSwitch: false,
+			checkbox:{
+				id:yid, name:'chbYear', value:yid, callback: function(param){selectCheckBoxCallBack(param);}
+			}
+		});
+		for(var j=1; j<=12; j++){
+			var mid = yid + '-' + j;
+			o.add({
+				id:mid, pid:yid, name:'' + j + '月份',type:'month',
+				callback:function(param){callBack(param);},
+				clickToggle:'open',clickChecked:null,
+				//showSwitch: false,
+				checkbox:{
+					id:mid, name:'chbMonth', value:'val' + mid, callback: function(param){selectCheckBoxCallBack(param);}
+				}
+			});
+			for(var d=1; d<31; d++){
+				var did = mid + '-' + d;
+				o.add({
+					id:did, pid:mid, name:j + '月' + d + '日',type:'day',
+					callback:function(param){callBack(param);},
+					clickToggle:'open',clickChecked:null,
+					//showSwitch: false,
+					checkbox:{
+						id:mid, name:'chbDay', value:'val' + did, callback: function(param){selectCheckBoxCallBack(param);}
+					}
+				});
+			}
+		}
+	}
+	*/
+	
+	var arrData = [];
+
+	for(var i=0; i<arrYear.length; i++){
+		var yid = arrYear[i];
+		arrData.push({
+			id:yid, pid:'root', name:'' + yid,type:'year',
+			//href:'http://60.12.220.24:81',target:'frmMain',
+			callback:function(param){callBack(param);},
+			clickToggle:'open',clickChecked:null,
+			//showSwitch: false,
+			checkbox:{
+				id:yid, name:'chbYear', value:yid, callback: function(param){selectCheckBoxCallBack(param);}
+			}
+		});
+		for(var j=1; j<=12; j++){
+			var mid = yid + '-' + j;
+			arrData.push({
+				id:mid, pid:yid, name:'' + j + '月份',type:'month',
+				callback:function(param){callBack(param);},
+				clickToggle:'open',clickChecked:null,
+				//showSwitch: false,
+				checkbox:{
+					id:mid, name:'chbMonth', value:'val' + mid, callback: function(param){selectCheckBoxCallBack(param);}
+				}
+			});
+			for(var d=1; d<31; d++){
+				var did = mid + '-' + d;
+				arrData.push({
+					id:did, pid:mid, name:j + '月' + d + '日',type:'day',
+					callback:function(param){callBack(param);},
+					clickToggle:'open',clickChecked:null,
+					//showSwitch: false,
+					checkbox:{
+						id:mid, name:'chbDay', value:'val' + did, callback: function(param){selectCheckBoxCallBack(param);}
+					}
+				});
+			}
+		}
+	}
+
+	o.initial(arrData, function(){o.select(2012);});
+	
+	function loadData(){
+		for(var i=0; i<30; i++){
+			mid++;
+			o.add({
+				id:mid, pid:8, name:'新增的子节点' + (mid),type:'device', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		for(var i=0; i<30; i++){
+			mid++;
+			o.add({
+				id:mid, pid:9, name:'新增的子节点' + (mid),type:'device', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		for(var i=0; i<30; i++){
+			mid++;
+			o.add({
+				id:mid, pid:20, name:'新增的子节点' + (mid),type:'channel', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbChannel', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+
+		for(var i=0; i<30; i++){
+			mid++;
+			o.add({
+				id:mid, pid:21, name:'新增的子节点' + (mid),type:'channel', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbChannel', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		o.add({id:'group', pid:-1, name:'我的分组', type:'group',callback:callBack,
+			checkbox:{id:mid, name:'chbGroup', value:mid, callback: selectCheckBoxCallBack}
+		});
+
+		for(var i=0; i<5; i++){
+			mid++;
+			o.add({
+				id:mid, pid:'group', name:'分组子节点' + mid,code:'1001',count:10,type:'device', icon:'page.gif',
+				callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, disabled:true, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		var pid = mid-1;
+		
+		for(var i=0; i<5; i++){
+			mid++;
+			o.add({
+				id:mid, pid:pid, name:'分组子节点' + mid,code:'1001',count:10,type:'device', icon:'page.gif',
+				callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+	}
+
+	//window.setTimeout(loadData, 1000);
+
+	//loadData();
+
+	
+	
+	function addTreeNode(){
+		var pid = $I('txtNodeId').value;
+		var count = parseInt($I('txtNodeCount').value,10);
+		if(isNaN(count)){
+			count = 10;
+		}
+		for(var i=0; i<count; i++){
+			mid++;
+			//o.add({id:mid, pid:pid, append:false, name:'新增的节点' + (mid),icon:'imgs/device/device.gif',checkbox:{id:mid, name:'chbDevice', value:mid, callBack: selectCheckBoxCallBack}});
+			o.add({id:mid, pid:pid, append:false, name:'新增的节点' + (mid),checkbox:{id:mid, name:'chbDevice', value:mid, callBack: selectCheckBoxCallBack}});
+		}
+	}
+	
+	function selectCheckBoxCallBack(param){
+		alert(param + ',' + param.id + ',' + param.chbName + ',value:' + param.value);
+		var arr = document.getElementsByName('chbDevice');
+
+		//alert(arr.length);
+	}
+
+
+</script>

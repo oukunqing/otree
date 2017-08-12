@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无标题页</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css"></style>
+	<script type="text/javascript" src="otree-1.js"></script>
+</head>
+<body>
+<div id="divBox" style="border:solid 1px #00f;overflow:auto;height:400px;float:left;width:200px;"></div>
+
+<textarea id="txtHtml" style="width:600px;height:200px;"></textarea>
+<textarea id="txtDebug" style="width:600px;height:200px;"></textarea>
+</body>
+</html>
+<script type="text/javascript">
+	var o = new oTree('o', 'divBox', {});
+
+	function load(){
+		
+		o.add({id:1,name:'节点1',pid:0,level:0});
+		
+		o.add({id:2,name:'节点2',pid:1,level:1});
+		o.add({id:3,name:'节点3',pid:1,level:1});
+		o.add({id:4,name:'节点4',pid:2,level:2});
+
+		var mid = 5;
+		for(var i=0; i<20; i++){
+			o.add({id:mid, name:'节点' + mid, pid: 4,level:3});
+			mid++;
+		}
+	}
+	
+	function showHtml(){
+		o.$('txtHtml').value = o.$('divBox').innerHTML;
+	}
+
+	load();
+	window.setTimeout(showHtml, 2000);
+</script>

@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无标题页</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css">
+	body{font-size:12px;}
+	</style>
+	<style type="text/css">
+		.form a{margin-right:5px;}
+	</style>
+	<script type="text/javascript" src="otree.js"></script>
+</head>
+<body>
+
+<div id="treebox" style="width:240px; height:360px; overflow:auto; padding:5px 0; border:solid 1px #ddd;float:left;"></div>
+<div id="treebox1" style="width:150px; height:360px; overflow:auto; padding:5px 0; border:solid 1px #ddd;float:left;margin-left:10px;"></div>
+<div id="treebox2" style="width:150px; height:360px; overflow:auto; padding:0; border:solid 1px #ddd;float:left;margin-left:10px;">
+	<ul id="lstUnit">
+		<li><a lang="{id:1,pid:0,level:0,name:'中研瑞华数字技术'}" href="http://www.3gvs.net" target="frmMain">宁波中研瑞华</a></li>
+		<li><a lang="{id:3,pid:1,level:1}" href="http://oa.4gvs.net" target="frmMain">780测试</a></li>
+		<li><a lang="{id:4,pid:2,level:2}">ZY-LED测试</a></li>
+		<li><a lang="{id:6,pid:2,level:2}">SSD-LED测试</a></li>
+		<li><a lang="{id:7,pid:5,level:2}">3G视频监控</a></li>
+		<li><a lang="{id:2,pid:1,level:1}" href="http://60.12.220.24:81" target="frmMain">LED测试</a></li>
+		<li><a lang="{id:8,pid:5,level:2}">4G视频监控</a></li>
+		<li><a lang="{id:5,pid:1,level:1}" class="current">视频监控</a></li>
+		<li><span lang="{id:6,pid:1,level:1}">手持巡检</span></li>
+		<li><div lang="{id:7,pid:1,level:1}">手持巡检1</div></li>
+		<li><p lang="{id:8,pid:1,level:1}">手持巡检2</p></li>
+		<li><label lang="{id:9,pid:1,level:1}">手持巡检3</label></li>
+	</ul>
+	<div style="background:#ddd;margin-bottom:5px;">读取HTML中的li列表<br /> 自动生成树菜单：</div>
+</div>
+<div style="margin-left:10px;float:left;width:400px;">
+	<textarea id="txtHtml" style="width:400px;height:100px;"></textarea>
+	<textarea id="txtDebug" style="width:400px;height:50px;"></textarea>
+	iframe:
+	<iframe id="frmMain" name="frmMain" style="width:405px;height:185px;"></iframe>
+</div>
+<br />
+<div id="divDebug"></div>
+<div class="form" style="clear:both;padding-top:10px;">
+<table cellpadding="5" cellspacing="0">
+	<tr>
+		<td>节点ID:</td>
+		<td><input type="text" id="txtNodeId" style="width:30px;" value="5" /></td>
+		<td>
+			<a onclick="addTreeNode();" onfocus="this.blur();" href="javascript:void(0);">添加一组节点</a>
+			<a onclick="delNode();" onfocus="this.blur();" href="javascript:void(0);">删除子节点</a>
+
+			<a onclick="switchNode(true);" onfocus="this.blur();" href="javascript:void(0);">打开节点</a>
+			<a onclick="switchNode(false);" onfocus="this.blur();" href="javascript:void(0);">关闭节点</a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<a onclick="selectCheckBox(true);" onfocus="this.blur();" href="javascript:void(0);">选中当前节点复选框</a>
+			<a onclick="selectCheckBox(false);" onfocus="this.blur();" href="javascript:void(0);">取消选中当前节点复选框</a>
+			<a onclick="selectCheckBox1(true);" onfocus="this.blur();" href="javascript:void(0);">选中当前节点复选框(被禁用的)</a>
+			<a onclick="selectCheckBox1(false);" onfocus="this.blur();" href="javascript:void(0);">取消选中当前节点复选框(被禁用的)</a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<a onclick="openAll();" onfocus="this.blur();" href="javascript:void(0);">打开所有</a>
+			<a onclick="closeAll();" onfocus="this.blur();" href="javascript:void(0);">关闭所有</a>
+			<a onclick="selectAllCheckBox(true);" onfocus="this.blur();" href="javascript:void(0);">选中所有复选框</a>
+			<a onclick="selectAllCheckBox(false);" onfocus="this.blur();" href="javascript:void(0);">取消选中所有复选框</a>
+		</td>
+	</tr>
+	<tr>
+		<td>Level:</td>
+		<td><input type="text" id="txtLevel" style="width:30px;" value="1" /></td>
+		<td>
+			<a onclick="openLevel();" onfocus="this.blur();" href="javascript:void(0);">打开Level</a>
+		</td>
+	</tr>
+	<tr>
+		<td>Type:</td>
+		<td><input type="text" id="txtType" style="width:50px;" value="unit" /></td>
+		<td>
+			<a onclick="openType();" onfocus="this.blur();" href="javascript:void(0);">打开节点类型</a>
+			<a onclick="closeType();" onfocus="this.blur();" href="javascript:void(0);">关闭节点类型</a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<a onclick="getSelected();" onfocus="this.blur();" href="javascript:void(0);">获取当前选择的内容</a>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>
+			<a onclick="showLine();" onfocus="this.blur();" href="javascript:void(0);">显示连线</a>
+			<a onclick="hideLine();" onfocus="this.blur();" href="javascript:void(0);">隐藏连线</a>
+		</td>
+	</tr>
+	<tr>
+		<td>Checkbox Name:</td>
+		<td><input type="text" id="txtChbName" style="width:50px;" value="chbUnit" /></td>
+		<td>
+			<a onclick="getChecked();" onfocus="this.blur();" href="javascript:void(0);">获得选中的复选框</a>
+			<a onclick="getCheckedValue();" onfocus="this.blur();" href="javascript:void(0);">获得选中的复选框内容</a>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+	function $I(i){
+		return document.getElementById(i);
+	}
+
+	function expandCallBack(param){
+		alert('expandCallBack:' + param.id + ',' + param.type + ',' + param.code);
+	}
+
+	function callBack(param){		
+		alert('CallBack:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + '}');
+		alert(typeof param.id + ',' + param.id);
+	}	
+
+	function callBack1(param){
+		alert('CallBack-1:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + '}');
+	}
+
+
+	var o = new oTree('o', $I('treebox'), {
+		showCheckBox: true, showSubNode: true,
+		showIcon: true, showLine: true,
+		spaceWidth: 15, skin: 'default',
+		callback: callBack,
+		//showFocus: false,
+		expandCallback: expandCallBack, dblclick: false
+	});
+	var mid = 1;
+
+	o.root({name:'树菜单'});
+	o.add({
+		id:mid, pid:-1, name:'第' + mid + '个节点',type:'unit',param:{id:99999},
+		checkbox:{name:'chbUnit', callback: function(param){selectCheckBoxCallBack(param);}}
+	});
+	
+	mid++;
+
+	o.add({id:mid, pid:-1, name:'第' + mid + '个节点',type:'unit',param:{id:99999},checkbox:{id:mid, name:'chbUnit', value:mid, callback: selectCheckBoxCallBack}});
+
+	for(var i=0; i<10; i++){
+		mid++;
+		o.add({
+			id:mid, pid:1, name:'第' + mid + '个节点\'sac\"a',type:'unit',code:'code-' + mid,icon:'folder.gif',
+			//href:'http://60.12.220.24:81',target:'frmMain',
+			callback:function(param){callBack(param);},
+			clickToggle:'open',clickChecked:null,
+			contextmenu: function(){treeContextMenu(event, this, 123);},
+			checkbox:{
+				id:mid, name:'chbUnit', value:'val' + mid, callback: function(param){selectCheckBoxCallBack(param);}
+			}
+		});
+	}
+	for(var i=0; i<15; i++){
+		mid++;
+		o.add({
+			id:mid, pid:3, name:'新增的节点' + (mid),type:'unit',callback:'callBack1',clickChecked:true,
+			checkbox:{id:mid, name:'chbUnit', value:'val' + mid, callback: selectCheckBoxCallBack}
+		});
+	}
+	function loadData(){
+		$I('txtDebug').value = new Date() + '\r\n';
+		
+		for(var i=0; i<20; i++){
+			mid++;
+			o.add({
+				id:mid, pid:8, name:'新增的子节点' + (mid),type:'device', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbDev', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		for(var i=0; i<20; i++){
+			mid++;
+			o.add({
+				id:mid, pid:9, name:'新增的子节点' + (mid),type:'device', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbDev', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		for(var i=0; i<20; i++){
+			mid++;
+			o.add({
+				id:mid, pid:20, name:'新增的子节点' + (mid),type:'channel', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbChannel', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+
+		for(var i=0; i<20; i++){
+			mid++;
+			o.add({
+				id:mid, pid:21, name:'新增的子节点' + (mid),type:'channel', icon:'page.gif',callback:callBack,
+				checkbox:{id:mid, name:'chbChannel', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		o.add({id:'group', pid:-1, name:'我的分组', type:'group',callback:callBack,
+			checkbox:{id:mid, name:'chbGroup', value:mid, callback: selectCheckBoxCallBack}
+		});
+
+		for(var i=0; i<5; i++){
+			mid++;
+			o.add({
+				id:mid, pid:'group', name:'分组子节点' + mid,code:'1001',count:10,type:'device', icon:'page.gif',
+				callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, disabled:true, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		var pid = mid-1;
+		
+		for(var i=0; i<5; i++){
+			mid++;
+			o.add({
+				id:mid, pid:pid, name:'分组子节点' + mid,code:'1001',count:10,type:'device', icon:'page.gif',
+				callback:callBack,
+				checkbox:{id:mid, name:'chbDevice', value:mid, callback: selectCheckBoxCallBack}
+			});
+		}
+		
+		$I('txtDebug').value += new Date() + '\r\n';
+	}
+
+	window.setTimeout(loadData, 1000);
+
+	//loadData();
+	
+	function addTreeNode(){
+		var pid = $I('txtNodeId').value;
+		
+		for(var i=0; i<10; i++){
+			mid++;
+			o.add({id:mid, pid:pid, append:false, name:'新增的节点' + (mid),checkbox:{id:mid, name:'chbDev', value:mid, callBack: selectCheckBoxCallBack}});
+		}
+	}
+
+	$I('txtHtml').value = $I('treebox').innerHTML;
+
+	o.select(3);
+
+	function stopBubble(ev){
+		try{
+			ev = window.event || e;
+			if(ev.stopPropagation){ev.stopPropagation();} else{ev.cancelBubble = true;}
+			if(ev.preventDefault){ev.preventDefault();} else{ev.returnValue = false;}
+		}catch(ex){}
+	}
+
+	function treeContextMenu(e, obj, param){
+		alert('右键菜单回调：' + obj.id + ',' + param);
+		stopBubble(e);
+	}
+
+	function delNode(){
+		var id = $I('txtNodeId').value;
+		if(id > 0){
+			o.removeChild(id);
+		}
+	}
+
+	function switchNode(isOpen){
+		var id = $I('txtNodeId').value;
+		if(isOpen){
+			o.open(id);
+		} else {
+			o.close(id);
+		}
+	}
+
+	function selectCheckBoxCallBack(param){
+		alert(param + ',' + param.id + ',' + param.chbName + ',value:' + param.value);
+		var arr = document.getElementsByName('chbDev');
+
+		//alert(arr.length);
+	}
+
+	function openAll(){
+		o.openAll();	
+	}
+
+	function closeAll(){
+		o.closeAll();
+	}
+
+	function openLevel(){
+		var level = parseInt($I('txtLevel').value, 10);
+		o.openLevel(level);
+	}
+	
+	window.setTimeout(update, 5000);
+
+	function update(){
+		o.update({
+			id: 10,
+			pid: 8,
+			name: '更新的节点(ID:' + 10 + ')',
+			icon: 'imgfolder.gif'
+		});
+		
+		o.update({
+			id:15,
+			pid: 8,
+			name: '更新的节点(ID:' + 15 + ')',
+			icon: 'imgfolder.gif'
+		});
+	}
+	
+	function openType(){
+		var type = $I('txtType').value;
+		o.openType(type);
+	}
+	
+	function closeType(){
+		var type = $I('txtType').value;
+		o.closeType(type);
+	}
+
+	function showLine(){
+		o.showNodeLine();
+	}
+
+	function hideLine(){
+		o.hideNodeLine();
+	}
+
+	function selectCheckBox(isChecked){
+		var id = $I('txtNodeId').value;
+		o.selectCheckBox(id, isChecked);
+	}
+	
+	function selectCheckBox1(isChecked){
+		var id = $I('txtNodeId').value;
+		o.selectCheckBox(id, isChecked, null, true);
+	}
+
+	function selectAllCheckBox(isChecked){
+		o.selectAllCheckBox(isChecked);
+	}
+
+	function getChecked(){
+		var name = $I('txtChbName').value;
+		var arr = o.getChecked(name);
+		alert('选中的复选框数量：' + arr.length);
+	}
+
+	function getCheckedValue(){
+		var name = $I('txtChbName').value;
+		var arr = o.getCheckedValue(name, false);
+		alert('选中的复选框数量：' + arr.length);
+		alert('选中的复选框内容列表：' + arr.join(','));
+	}
+
+	function getSelected(){
+		var param = o.getSelected();
+
+		alert(typeof param);
+
+		alert(param.id + ',' + param.pid + ',' + param.code + ',' + param.name);
+	}
+	
+	var tid = 0;
+	var o1 = new oTree('o1', $I('treebox1'), {showCheckBox:false,showLine:false,skin:'device'});
+	o1.root({name:'设备列表'});
+	for(var i=1; i<5; i++){
+		tid++;
+		o1.add({id:tid, pid:-1, name:'第' + tid + '个节点',callback:callBack});
+	}
+	for(var i=0; i<5; i++){
+		tid++;
+		o1.add({id:tid, pid:1, name:'第' + tid + '个节点',callback:callBack});
+	}
+	for(var i=0; i<5; i++){
+		tid++;
+		o1.add({id:tid, pid:6, name:'第' + tid + '个节点-设备' + i,icon:'device.gif',callback:callBack});
+	}
+	
+	for(var i=0; i<5; i++){
+		tid++;
+		o1.add({id:tid, pid:2, show:false, name:'第' + tid + '个节点-设备' + i,icon:'device.gif',callback:callBack});
+	}
+	//o1.select(6);
+
+	var o2 = new oTree('o2', $I('treebox2'), {showCheckBox:false,showSubNode:true,showIcon:true,showLine:true});
+
+	function getList(){
+		//o2.htmlToTree({obj:$I('lstUnit'),isSort:true, childTagName:'A'});
+		o2.htmlToTree({obj:$I('lstUnit'),isSort:true});
+	}
+	getList();
+
+</script>

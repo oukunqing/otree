@@ -1,0 +1,27 @@
+.otree{color:#000;cursor:default;font-family:ËÎÌו,Arial;}
+.otree .node{line-height:18px;clear:both;white-space:nowrap;display:block;padding:0;margin:0;_margin-top:-4px;}
+.otree .node-selected{background:#d9e8fb;}
+.otree .root{padding:0; display:block; margin:0;_margin-top:0;_margin-bottom:0px;}
+.otree .node .expand{cursor:pointer;text-decoration:none;}
+.otree .node .expand-none{cursor:default;text-decoration:none;}
+.otree .node img{display:inline-block;margin:0;padding:0;max-width:18px;max-height:18px;float:left;border:none 0;
+	*float:none;_float:none;*margin-bottom:-4px;_margin-bottom:0px;}
+.otree .node input{display:inline-block;margin:3px 2px 0 0;padding:0;float:left;
+	*height:15px;_height:15px;*width:14px;_width:14px; *margin:-2px 0 1px 2px;_margin:-2px 0 5px 2px;*float:none;_float:none;}
+.otree .node span{cursor:default;height:18px;line-height:18px;white-space:nowrap;display:block;float:left;
+	*display:inline-block;*float:none;_display:inline-block;_float:none;_margin-bottom:4px;}
+.otree .node a{text-decoration:none;color:#000;line-height:18px;float:left;display:inline-block;
+	*float:none;_float:none;}
+.otree .node a:hover{text-decoration:none;color:#000;line-height:18px;display:inline-block;
+	*float:none;_float:none;}
+.otree .root img{float:left; display:block;}
+
+.otree .node .text{cursor:default;color:#000;line-height:18px;text-decoration:none;display:inline-block;float:none;padding:0 2px;margin:0;margin-right:3px;
+	*margin-top:-3px;_margin-top:3px;*line-height:16px;_line-height:15px;_margin-bottom:4px;}
+.otree .node .link{cursor:pointer;color:#000;line-height:18px;text-decoration:none;display:inline-block;float:none;padding:0 2px;margin:0;margin-right:3px;
+	*margin-top:-3px;_margin-top:3px;*line-height:16px;_line-height:15px;_margin-bottom:4px;}
+.otree .node .selected{background:#d9e8fb;color:#000;line-height:18px; display:inline-block;float:none;
+	*margin-top:-3px;_margin-top:3px;*line-height:16px;_line-height:15px;_margin-bottom:4px;}
+.otree .node .text:hover,.otree .node .link:hover,.otree .node .selected:hover{text-decoration:none;color:#000;
+	*margin-top:-3px;_margin-top:3px;*line-height:16px;_line-height:15px;_margin-bottom:4px;}
+.otree .node,.otree .node a,.otree .node .text,.otree .node .link,.otree .node .selected,.otree .node span{font-size:12px;}

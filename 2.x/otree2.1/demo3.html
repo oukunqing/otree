@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OTREE示例</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css">
+	body{font-size:12px;}
+	</style>
+	<style type="text/css">
+		.form a{margin-right:5px;}
+	</style>
+	<script type="text/javascript" src="otree.js"></script>
+</head>
+<body>
+<div id="treebox2" style="width:200px; height:360px; overflow:auto; padding:0; border:solid 1px #ddd;float:left;margin-left:10px;">
+	<ul id="lstUnit">
+		<li><a lang="{id:1,pid:-1,level:0,name:'各大网站导航',checkbox:{name:'chbUnit'}}" class="current" href="javascript:void(0);" target="frmMain">网站导航</a></li>
+		<li><a lang="{id:3,pid:1,level:1,checkbox:{id:3, name:'chbUnit', value:'val1'}}" href="http://www.google.com" target="frmMain">谷歌</a></li>
+		<li><a lang="{id:4,pid:2,level:2,checkbox:{id:4, name:'chbUnit', value:'val2'}}" href="http://map.baidu.com"  target="frmMain">百度地图</a></li>
+		<li><a lang="{id:6,pid:2,level:2,checkbox:{name:'chbUnit'}}" href="http://music.baidu.com"  target="frmMain">百度音乐</a></li>
+		<li><a lang="{id:2,pid:1,level:1,checkbox:{name:'chbUnit'}}" href="http://www.baidu.com" target="frmMain">百度</a></li>
+		<li><a lang="{id:8,pid:5,level:2,checkbox:{name:'chbUnit'}}" href="http://www.126.com" target="frmMain">126邮箱</a></li>
+		<li><a lang="{id:5,pid:1,level:1,checkbox:{name:'chbUnit'}}" href="http://www.163.com" target="frmMain">网易</a></li>
+		<li><a lang="{id:10,pid:1,level:1,checkbox:{name:'chbUnit'}}" href="http://www.alibaba.com" target="frmMain">阿里巴巴</a></li>
+		<li><a lang="{id:11,pid:10,level:1,checkbox:{name:'chbUnit'}}" href="http://www.taobao.com" target="frmMain">淘宝</a></li>
+		<li><a lang="{id:12,pid:10,level:1,checkbox:{name:'chbUnit'}}" href="https://www.alipay.com" target="frmMain">支付宝</a></li>
+		<li><a lang="{id:13,pid:10,level:1,checkbox:{name:'chbUnit'}}" href="http://www.aliyun.com" target="frmMain">阿里云</a></li>
+		<li><a lang="{id:20,pid:1,level:1,checkbox:{name:'chbUnit'}}" href="http://www.sina.com" target="frmMain">新浪</a></li>
+		<li><a lang="{id:21,pid:4,level:3,checkbox:{name:'chbUnit'}}" href="http://map.baidu.com"  target="frmMain">百度地图API</a></li>
+		<li><a lang="{id:22,pid:4,level:3,checkbox:{name:'chbUnit'}}" href="http://map.baidu.com"  target="frmMain">百度地图接口</a></li>
+		<li><a lang="{id:23,pid:21,level:4,checkbox:{name:'chbUnit'}}" href="http://map.baidu.com"  target="frmMain">百度地图API-1</a></li>
+		<li><a lang="{id:24,pid:23,level:5,checkbox:{name:'chbUnit'}}" href="http://map.baidu.com"  target="frmMain">百度地图API-1-1</a></li>
+	</ul>
+	<div style="background:#ddd;margin-bottom:5px;">读取HTML中的li列表<br /> 自动生成树菜单：</div>
+</div>
+<div style="margin-left:10px;float:left;width:400px;">
+	iframe:
+	<iframe id="frmMain" name="frmMain" style="width:605px;height:245px;"></iframe>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+	function $I(i){
+		return document.getElementById(i);
+	}
+	function expandCallBack(param){
+		//alert('expandCallBack:' + param.id + ',' + param.type + ',' + param.code);
+	}
+
+	function callBack(param, objTree, callbackObj){
+		document.getElementById('divDebug').innerHTML = param.id + ',' + param.name;
+		//alert('CallBack:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + ',loaded:' + param.loaded + ',tree:' + param.tree + '}');//param.tree 一维数组 [pid,pid,...,id]
+		if(param.tree != undefined && objTree != undefined){
+			if(param.id == 15 || param.id == 16){
+				alert('父级树：' + objTree.getTextValue(param.tree));
+			}
+		}
+		//alert(typeof param.id + ',' + param.id);
+	}	
+
+	function selectCheckBoxCallBack(param){
+		alert(param + ',' + param.id + ',' + param.chbName + ',value:' + param.value);
+		var arr = document.getElementsByName('chbDevice');
+
+		//alert(arr.length);
+	}
+
+	var o2 = new oTree('o2', $I('treebox2'), {
+		showCheckBox:true,showSubNode:true,showIcon:true,
+		keyEvent: true, //是否启用键盘(上、下键)事件
+		showLine:true,
+		callback: function(param){alert(param.name);},
+		checkboxCallback: selectCheckBoxCallBack
+	});
+
+	function getList(){
+		//o2.htmlToTree({obj:$I('lstUnit'),isSort:true, childTagName:'A'});
+		o2.htmlToTree({obj:$I('lstUnit'),isSort:true});
+
+		 //window.setTimeout(function(){alert(o2.box.innerHTML)}, 3000);
+	}
+	getList();
+
+</script>

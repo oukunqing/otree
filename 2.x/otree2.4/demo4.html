@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>OTREE示例</title>
+	<meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<style type="text/css">
+	body{font-size:12px;}
+	</style>
+	<style type="text/css">
+		.form a{margin-right:5px;}
+	</style>
+	<script type="text/javascript" src="otree.js"></script>
+</head>
+<body>
+
+<div id="treebox" style="width:240px; height:360px; overflow:auto; padding:5px 0; border:solid 1px #ddd;float:left;"></div>
+
+</body>
+</html>
+<script type="text/javascript">
+
+String.prototype.padLeft = function(totalWidth, paddingChar) {
+    var s = this;
+    if (paddingChar == undefined) {
+        paddingChar = '0';
+    }
+    for (var i = 0, c = totalWidth - s.length; i < c; i++) {
+        s = paddingChar + s;
+    }
+    return s;
+};
+Date.prototype.toString = function (format) {
+    var year = this.getFullYear();
+    if (year < 1900) { year += 1900; }
+    var strDate = ['' + year,
+        ('' + (this.getMonth() + 1)).padLeft(2, '0'), 
+        ('' + this.getDate()).padLeft(2, '0'), 
+        ('' + this.getHours()).padLeft(2, '0'), 
+        ('' + this.getMinutes()).padLeft(2, '0'), 
+        ('' + this.getSeconds()).padLeft(2, '0'),  
+        ('' + this.getMilliseconds()).padLeft(3, '0')
+    ];
+    return strDate[0] + '-' + strDate[1] + '-' + strDate[2] + ' ' + strDate[3] + ':' + strDate[4] + ':' + strDate[5] + ' ' + strDate[6];
+};
+	function $I(i){
+		return document.getElementById(i);
+	}
+
+	function expandCallBack(param){
+		//alert('expandCallBack:' + param.id + ',' + param.type + ',' + param.code);
+	}
+
+	function callBack(param, objTree, callbackObj){
+		document.getElementById('divDebug').innerHTML = param.id + ',' + param.name;
+		//alert('CallBack:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + ',loaded:' + param.loaded + ',tree:' + param.tree + '}');//param.tree 一维数组 [pid,pid,...,id]
+		if(param.tree != undefined && objTree != undefined){
+			if(param.id == 15 || param.id == 16){
+				alert('父级树：' + objTree.getTextValue(param.tree));
+			}
+		}
+		//alert(typeof param.id + ',' + param.id);
+	}	
+
+	function callBack1(param){
+		//alert('CallBack-1:{id:' + param.id + ',pid:' + param.pid + ',type:' + param.type + ',code:' + param.code + ',name:' + param.name + ',level:' + param.level + ',tree:' + param.tree + '}');
+	}
+
+	function loadedCallback(objTree){
+		
+		//objTree.openLevel(0);
+		if(1 == objTree.loadTimes){
+			//objTree.root({id:'root1', name:'树菜单1'});
+		}
+		//alert('树菜单节点加载完毕' + ', 第' + objTree.loadTimes + '次');
+	}
+
+	function ContextMenuCallBack(param){
+		alert(param);
+	}
+
+	function selectCheckBoxCallBack(param){
+		alert(param + ',' + param.id + ',' + param.chbName + ',value:' + param.value);
+		var arr = document.getElementsByName('chbDevice');
+
+		//alert(arr.length);
+	}
+
+	
+	function moveNode(action){
+		var nid = $I('txtNodeId').value;
+		//移动节点，即节点动态排序功能，（注：节点移动功能仅限于不显示线条的情况下，显示线条的情况下会出现线条错位的情况）
+		//4个参数
+		//nid: 要移动的节点，
+		//action: true|'up' 向上，false|'down' 向下
+		//tnid: 目标节点
+		//moveNodeCallback: 回调函数，移动后回调
+		o.move(nid, action, null, moveNodeCallback);
+	}
+
+	//isMove 是否移动成功，true:成功，false:失败
+	//arr 移动的节点，节点1 的数据
+	//action 移动方式 向上或向下
+	function moveNodeCallback(isMove, arr, action){
+		alert('移动' + (isMove ? '成功':'失败(可能到顶或到底了)'));
+		if(isMove){
+			alert(arr[0].id + ',' + arr[1].id + ', ' + action);
+		}
+	}
+	
+	function stopBubble(ev){
+		try{
+			ev = window.event || e;
+			if(ev.stopPropagation){ev.stopPropagation();} else{ev.cancelBubble = true;}
+			if(ev.preventDefault){ev.preventDefault();} else{ev.returnValue = false;}
+		}catch(ex){}
+	}
+
+	function treeContextMenu(e, obj, param, objTree){
+		alert('调用自定义右键菜单（右键菜单自行处理）：' + param.id + ',' + obj.innerHTML);
+		return false;
+		var config = {
+			//width: 150, //宽度可以设置，也可以不设置
+			zindex: 1000,
+			opacity: 1,
+			item: [
+				{text: obj.innerHTML,func:function(){ ContextMenuCallBack(obj.innerHTML); } },
+				{text:'新建新建',shortcutkey:'N', func:function(){ ContextMenuCallBack('新建'); } },
+				{text:'编辑编辑1',shortcutkey:'E', func:function(){ ContextMenuCallBack('编辑'); },
+					sub:{
+						//width: 120, //宽度可以设置，也可以不设置
+						item:[
+							{text:'更新', shortcutkey:'U', func:function(){ ContextMenuCallBack('更新'); }},
+							{text:'删除aa', disabled:true, func:function(){ ContextMenuCallBack('删除'); }},
+							{text: 'separator'},
+							{text:'复制', shortcutkey:'C', func:function(){ ContextMenuCallBack('复制'); }},
+							{text:'粘贴', func:function(){ ContextMenuCallBack('粘贴'); }},
+							{text:'剪切', func:function(){ ContextMenuCallBack('剪切'); }}
+						]
+					}
+				},
+				{text:'保存保存',func:function(){ } }
+			]
+		};
+		new ContextMenu(e, config, obj);
+	}
+
+	var o = new oTree('o', $I('treebox'), {});
+	var mid = 1;
+
+	//o.root({id:'root0', name:'树菜单根节点0'});
+
+	o.add({id:1, name:'树菜单根节点1', isRoot:true,callback:function(){alert('root1');}});
+	o.add({id:2, name:'树菜单根节点2', isRoot:true,callback:function(){}});
+
+	mid = 3;
+	o.add({
+		id:mid, pid:1, name:'第' + mid + '个节点',type:'unit',
+		checkbox:{name:'chbUnit', callback: function(param){selectCheckBoxCallBack(param);}}
+	});
+	
+	mid++;
+
+	o.add({id:mid, pid:1, name:'第' + mid + '个节点',type:'unit',param:{id:99999},checkbox:{id:mid, name:'chbUnit', value:mid, callback: selectCheckBoxCallBack}});
+	
+	for(var i=0; i<5; i++){
+		mid++;
+		o.add({
+			id:mid, pid:3, name:'第' + mid + '个节点\'sac\"a',type:'unit',code:'code-' + mid,icon:'folder.gif',
+			//href:'http://60.12.220.24:81',target:'frmMain',
+			callback:function(param){callBack(param);},
+			clickToggle:'toggle', //open|close|toggle
+			clickChecked:null,
+			showSwitch: false,
+			contextmenu: function(event, obj, param){treeContextMenu(event, obj, param);},
+			//contextmenu: treeContextMenu,
+			checkbox:{
+				id:mid, name:'chbUnit', value:'val' + mid, callback: function(param){selectCheckBoxCallBack(param);}
+			}
+		});
+	}
+	
+</script>
