@@ -1,5 +1,9 @@
+# otree
+
 otree.js
+
 原生JS树型菜单
+
 原生JS写的无限级树形菜单，兼容IE6/7/8/9+、Chrome、Firefox、Opera、Safari等主流浏览器，以及360/搜狗等其他各浏览器。 
 可动态添加/删除节点，启用/不启用复选框，启用连线或不连线，支持自定义ICON图标，
 
@@ -60,7 +64,7 @@ otree.js
     修正了 节点title的bug，之前的title是加在节点div中（这样显示会有问题），现在修改之后是加在节点文本上
 
 2.8 增加 findNode(field, value, isCallback) 方法，主要用于查找指定的节点，field:查找的字段，code 或 name，查找到相关的节点时，选中(select方法)相关的首个节点, isCallback:true|false，若为true表示选中之后触发回调。
-示例：objTree.findNode('name', '节点12', false); objTree.findNode('code', 'node12', false);
+<br />示例：objTree.findNode('name', '节点12', false); objTree.findNode('code', 'node12', false);
 
 
 
