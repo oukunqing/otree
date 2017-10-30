@@ -59,6 +59,6 @@
     修正了 当节点不存在时，操作节点JS报错的问题
     修正了 节点title的bug，之前的title是加在节点div中（这样显示会有问题），现在修改之后是加在节点文本上
 
-2.8 增加 findNode(field, value, isCallback) 方法，主要用于查找指定的节点，field:查找的字段，code 或 name，查找到相关的节点时，选中(select方法)相关的首个节点, isCallback:true|false，若为true表示选中之后触发回调
+2.8 增加 findNode(field, value, isCallback) 方法，主要用于查找指定的节点，field:查找的字段，code 或 name，查找到相关的节点时，选中(select方法)相关的首个节点, isCallback:true|false，若为true表示选中之后触发回调。示例：objTree.findNode('name', '节点12', false); objTree.findNode('code', 'node12', false);
 
 
