@@ -15,7 +15,7 @@ otree.js
 
 更多功能参见demo.html和demo1.html
 
-更新记录
+### 更新记录
 
 1.4 修正部分自定义ICON无法显示的问题
 
